@@ -1,0 +1,31 @@
+#! /usr/bin/env node
+
+const arg = require('arg');
+const edition = require('../package.json').version;
+
+module.exports = () => {
+  const args = arg(process.argv.slice(2));
+
+  let cmd = args._[0] || 'help';
+
+  if (args.v || args.version) {
+    cmd = 'version';
+  }
+
+  switch (cmd) {
+    case 'today':
+      console.log('');
+      break;
+    case 'tomorrow':
+      console.log('');
+      break;
+    case 'version':
+      console.log(edition);
+      break;
+    case 'help':
+    default:
+      console.log(`
+        create-autots-lib [command] <options>
+      `);
+  }
+};

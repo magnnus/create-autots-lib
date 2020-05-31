@@ -1,0 +1,28 @@
+{
+  "name": "create-autots-lib",
+  "version": "0.0.1",
+  "description": "a init tool for @autots repos",
+  "bin": {
+    "@autots/create-autots-lib": "bin/index",
+    "create-autots-lib": "bin/index"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "magnnus <magnnus1215@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "arg": "^4.1.3",
+    "chalk": "^4.0.0",
+    "commander": "^5.1.0",
+    "execa": "^4.0.2",
+    "inquirer": "^7.1.0",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0"
+  }
+}

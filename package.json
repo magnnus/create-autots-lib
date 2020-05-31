@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "bootstrap": "lerna bootstrap --hoist",
+    "pretest": "eslint packages/**/*.js"
+  },
+  "devDependencies": {
+    "conventional-changelog-cli": "^2.0.34",
+    "eslint": "^7.1.0",
+    "lerna": "^3.22.0"
+  }
+}
