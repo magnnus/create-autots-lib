@@ -1,0 +1,19 @@
+
+{
+  "include": [
+    "src",
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "public",
+  ],
+  "compilerOptions": {
+    "incremental": true,
+    "diagnostics": true,
+    // "noEmitOnError": true,
+    // "noEmitHelpers": true,  // 不生成 helper 函数，需额外安装 ts-helpers
+    // "importHelpers": true,  // 不需要额外安装 ts-helper，但文件必须是模块
+    // "downlevelIteration": true,  // 降级遍历器实现（es3/5）
+  }
+}

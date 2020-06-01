@@ -1,56 +1,36 @@
-const glob = require('glob');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const glob = require('glob');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
+const { pascalCase } = require('change-case');
 
 const projectRoot = process.cwd();
+const pkg = require(path.join(projectRoot, 'package.json'));
 
-const setMPA = () => {
-  const entry = {};
-  const htmlWebpackPlugins = [];
-  const entryFiles = glob.sync(path.join(projectRoot, './src/*/index.js'));
-
-  Object.keys(entryFiles)
-    .map((index) => {
-      const entryFile = entryFiles[index];
-
-      const match = entryFile.match(/src\/(.*)\/index\.js/);
-      const pageName = match && match[1];
-
-      entry[pageName] = entryFile;
-      return htmlWebpackPlugins.push(
-        new HtmlWebpackPlugin({
-          inlineSource: '.css$',
-          template: path.join(projectRoot, `./src/${pageName}/index.html`),
-          filename: `${pageName}.html`,
-          chunks: ['vendors', pageName],
-          inject: true,
-          minify: {
-            html5: true,
-            collapseWhitespace: true,
-            preserveLineBreaks: false,
-            minifyCSS: true,
-            minifyJS: true,
-            removeComments: false,
-          },
-        }),
-      );
-    });
-
-  return {
-    entry,
-    htmlWebpackPlugins,
-  };
-};
-
-const { entry, htmlWebpackPlugins } = setMPA();
+const libClassName = pascalCase(pkg.name.split('/').reverse()[0]);
+const entryFile = path.resolve(projectRoot, 'src', 'index.ts');
 
 module.exports = {
-  entry,
+  entry: {
+    main: entryFile,
+  },
+  context: projectRoot,
+  output: {
+    path: path.resolve(projectRoot, 'dist'),
+    filename: '[name].js',
+    library: ['AutoTs', libClassName],
+    libraryTarget: 'umd',
+    libraryExport: "default",
+    globalObject: 'this',
+  },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
   module: {
+    unknownContextCritical : false,
     rules: [
       {
         test: /\.js$/,
@@ -58,10 +38,7 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
-            options: {
-            },
           },
-          'eslint-loader',
         ],
       },
       {
@@ -69,6 +46,12 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: [
           'babel-loader',
+          {
+            loader: 'ts-loader',
+            options: {
+              // transpileOnly: true,
+            } 
+          },
         ],
       },
       {
@@ -104,23 +87,26 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|gif|png|)$/,
+        test: /\.(jpe?g|svg|gif|png|)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
+              limit: 8192,
               name: '[name]_[hash:8].[ext]',
+              outputPath: 'images',
             },
           },
         ],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf|)/,
+        test: /\.(woff|woff2|eot|ttf|otf)/,
         use: [
           {
             loader: 'file-loader',
             options: {
               name: '[name]_[hash:8].[ext]',
+              outputPath: 'fonts',
             },
           },
         ],
@@ -128,10 +114,8 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCSSExtractPlugin({
-      filename: '[name]_[contenthash:8].css',
-    }),
     new CleanWebpackPlugin(),
+    new webpack.ProgressPlugin(),
     new FriendlyErrorsWebpackPlugin(),
     function errorPlugin() {
       this.hooks.done.tap('done', (stats) => {
@@ -140,6 +124,6 @@ module.exports = {
         }
       });
     },
-  ].concat(htmlWebpackPlugins),
-  stats: 'errors-only',
+  ],
+  stats: 'minimal',
 };

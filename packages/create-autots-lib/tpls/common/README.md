@@ -54,4 +54,8 @@ new CustomLibName();
 | Name | Type | Default | Optional | Description |
 
 
+## Develop
+
+The **entry** file must be named as `index.ts` and put this file in the `src` root directory.
+
 ## Todo

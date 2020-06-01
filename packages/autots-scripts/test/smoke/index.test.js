@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const rimraf = require('rimraf');
 const Mocha = require('mocha');
-const prodConfig = require('../../lib/webpack.prod');
 
 const mocha = new Mocha({
   timeout: '10000ms',
@@ -11,6 +10,8 @@ const mocha = new Mocha({
 process.chdir(path.join(__dirname, 'tpl'));
 
 rimraf('./dist', () => {
+  const prodConfig = require('../../lib/webpack.prod');
+
   webpack(prodConfig, (err, stats) => {
     if (err) {
       console.error(err); // eslint-disable-line
@@ -24,8 +25,7 @@ rimraf('./dist', () => {
       children: false,
     }));
 
-    mocha.addFile(path.join(__dirname, 'html.test.js'));
-    mocha.addFile(path.join(__dirname, 'css.test.js'));
+    mocha.addFile(path.join(__dirname, 'js.test.js'));
 
     mocha.run();
   });

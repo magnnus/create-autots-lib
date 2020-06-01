@@ -1,43 +1,50 @@
+const path = require('path');
 const merge = require('webpack-merge');
-const webpack = require('webpack');
 const cssnano = require('cssnano');
-const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const webpack = require('webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const baseConfig = require('./webpack.base');
+
+// confirm `min` entries
+const entryKeys = Object.keys(baseConfig.entry);
+const prodEntry = {};
+entryKeys.forEach(key => {
+  prodEntry[key + '.min'] = baseConfig.entry[key];
+});
+
+const projectRoot = process.cwd();
+const pkg = require(path.join(projectRoot, 'package.json'));
+const banner =`${pkg.name} v${pkg.version}
+Last Modified @ ${new Date().toLocaleString()}
+Released under the MIT License.`;
 
 const prodConfig = {
   mode: 'production',
+  entry: {
+    ...baseConfig.entry,
+    ...prodEntry,
+  },
   plugins: [
+    new MiniCSSExtractPlugin({
+      filename: '[name].css',
+    }),
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css$/g,
       cssProcessor: cssnano,
     }),
-    new HtmlWebpackExternalsPlugin({
-      externals: [
-        {
-          module: 'react',
-          entry: 'https://11.url.cn/now/lib/16.2.0/react.min.js',
-          global: 'React',
-        },
-        {
-          module: 'react-dom',
-          entry: 'https://11.url.cn/now/lib/16.2.0/react-dom.min.js',
-          global: 'ReactDOM',
-        },
-      ],
+    new webpack.BannerPlugin({
+      banner
     }),
   ],
   optimization: {
-    splitChunks: {
-      minSize: 0,
-      cacheGroups: {
-        commons: {
-          name: 'vendors',
-          chunks: 'all',
-          minChunks: 2,
-        },
-      },
-    },
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        include: /\.min\.(js|ts)$/,
+      }),
+    ],
   },
 };
 

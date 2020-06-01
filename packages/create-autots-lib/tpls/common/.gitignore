@@ -118,3 +118,5 @@ dist
 .DS_Store
 *.tsbuildinfo
 *.map
+
+package-lock.json

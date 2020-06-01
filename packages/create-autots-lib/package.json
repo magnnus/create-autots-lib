@@ -1,7 +1,7 @@
 {
   "name": "create-autots-lib",
   "version": "0.0.1",
-  "description": "a init tool for @autots repos",
+  "description": "a init tool for typescript libs under scrope - @autots ",
   "bin": {
     "@autots/create-autots-lib": "bin/index",
     "create-autots-lib": "bin/index"

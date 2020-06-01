@@ -1,55 +1,46 @@
 const path = require('path');
-const arg = require('arg');
+const chalk = require('chalk');
+const { Command } = require('commander');
 const inquirer = require('inquirer');
 
 const { createLib } = require('./main');
+const pkg = require('../package.json');
 
-const defaultTpl = 'TypeScript';
+const defaultTpl = 'ts-class';
+let targetDir = process.cwd();
+let targetLibName = path.basename(targetDir);
 
-function parseRawArgs(rawArgs) {
-  const args = arg({
-    // Types
-    '--yes': Boolean,
-    '--install': Boolean,
-    '--git': Boolean,
-    '--type': String,
-    
-    // Aliases
-    '-y': '--yes',
-    '-i': '--install',
-    '-g': '--git',
-    '-t': '--type',
-  }, {
-    argv: rawArgs.slice(2),
-  });
+const program = new Command(pkg.name);
 
-  const cwd = process.cwd();
+program
+  .version(pkg.version)
+  .arguments('[targetLibName]')
+  .usage(`${chalk.green('[targetLibName]')} [options]`)
+  .action((name = '') => {
+    targetDir = path.join(process.cwd(), name);
+    targetLibName = targetDir.split(path.sep).reverse()[0];
+  })
+  .option('-y, --yes', 'use all default config')
+  // .option('-i, --install', 'install all dependencies')
+  .option('-g, --git', 'use `git` to init this project')
+  .option('-t, --type <type>', 'select lib type', 'ts-class');
 
-  return {
-    targetDir: args._[0] ? path.resolve(cwd, args._[0]) : cwd,
-    tpl: args['--type'] || defaultTpl,
-    skip: args['--yes'] || false,
-    git: args['--git'] || false,
-    runInstall: args['--install'] || false,
-  };
-}
+program.parse()
 
 async function promptForMissingOptions(options) {
 
-  if (options.skip) {
-    return {
-      ...options,
-      tpl: options.tpl || defaultTpl,
-    };
+  if (options.yes) {
+    return;
   }
 
   const questions = [];
-  if (!options.tpl) {
+
+  if (!options.type) {
     questions.push({
       type: 'list',
-      name: 'tpl',
+      name: 'type',
       message: 'Please choose which lib tpl to use',
-      choices: ['TypeScript', 'JavaScript'],
+      choices: ['ts-class', 'ts-utils'],
       default: defaultTpl,
     });
   }
@@ -66,16 +57,19 @@ async function promptForMissingOptions(options) {
   const answers = await inquirer.prompt(questions);
   return {
     ...options,
-    tpl: options.tpl || answers.tpl,
+    type: options.type || answers.type,
     git: options.git || answers.git,
   };
 }
 
 module.exports = {
-  async cli(args) {
-    let options = parseRawArgs(args);
-    options = await promptForMissingOptions(options);
-    console.log(options);
+  async cli() {
+    program.parse();
+
+    const options = await promptForMissingOptions(program.opts);
+    options.targetDir = targetDir;
+    options.targetLibName = targetLibName;
+
     createLib(options);
   }
 };

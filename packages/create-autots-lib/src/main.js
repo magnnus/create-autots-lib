@@ -26,17 +26,50 @@ async function copyTplFiles(options) {
   });
 }
 
+function createPkg(options) {
+  const basePkgInfo = require(path.join(options.tplDir, 'package.json'));
+  const pkg = {
+    ...basePkgInfo,
+    name: `@autots/${options.targetLibName}`,
+  };
+
+  fs.writeFileSync(path.join(options.targetDir, 'package.json'), JSON.stringify(pkg, null, 2));
+}
+
+function installAllDependencies(options) {
+  const pkg = require(path.join(options.tplDir, 'package.json'));
+  const devDependencies = Object.keys(pkg.devDependencies);
+  const dependencies = Object.keys(pkg.dependencies);
+  const cwd = options.targetDir;
+
+  const tasks = [];
+
+  if (devDependencies.length > 0) {
+    tasks.push(
+      execa('npm', [ 'i', ...devDependencies, '-D'], {
+        cwd,
+      })
+    );
+  }
+
+  if (dependencies.length > 0) {
+    tasks.push(
+      execa('npm', [ 'i', ...dependencies, '-S'], {
+        cwd,
+      })
+    );
+  }
+
+  return Promise.all(tasks);
+}
+
 module.exports = {
   async createLib(options) {
-    options = {
-      ...options,
-      targetDir: options.targetDir || process.cwd(),
-    };
-
     const tplDir = path.resolve(
       __dirname,
-      '../tpls',
-      options.tpl.toLowerCase()
+      '..',
+      'tpls',
+      options.type.toLowerCase()
     );
     options.tplDir = tplDir;
 
@@ -53,17 +86,17 @@ module.exports = {
         task: () => copyTplFiles(options),
       },
       {
+        title: 'Generate package.json',
+        task: () => createPkg(options),
+      },
+      {
         title: 'Initialize git',
         task: () => initGit(options),
         enabled: () => options.git,
       },
       {
         title: 'Install dependencies',
-        task: () => execa('npm', [ 'install' ] ),
-        skip: () =>
-          !options.runInstall ?
-          'Pass --install to automatically install dependencies' :
-          undefined,
+        task: () => installAllDependencies(options),
       },
     ]);
 
