@@ -21,7 +21,6 @@ program
     targetLibName = targetDir.split(path.sep).reverse()[0];
   })
   .option('-y, --yes', 'use all default config')
-  // .option('-i, --install', 'install all dependencies')
   .option('-g, --git', 'use `git` to init this project')
   .option('-t, --type <type>', 'select lib type', 'ts-class');
 

@@ -1,5 +1,4 @@
 const path = require('path');
-// const glob = require('glob');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');

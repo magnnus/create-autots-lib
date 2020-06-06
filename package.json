@@ -5,8 +5,11 @@
     "pretest": "eslint packages/**/*.js"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-lerna-scopes": "^8.3.4",
     "conventional-changelog-cli": "^2.0.34",
     "eslint": "^7.1.0",
+    "husky": "^4.2.5",
     "lerna": "^3.22.0"
   }
 }

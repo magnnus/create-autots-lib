@@ -21,19 +21,21 @@ async function initGit(options) {
 }
 
 async function copyTplFiles(options) {
+  const commonDir = path.join(__dirname, '..', 'tpls/common');
+  await copy(commonDir, options.targetDir, {
+    clobber: false,
+    stopOnErr: true,
+  });
   return copy(options.tplDir, options.targetDir, {
-    clobber: false, // not overwrite destination files that already exist
+    clobber: true, // will overwrite destination files that already exist
   });
 }
 
 function createPkg(options) {
   const basePkgInfo = require(path.join(options.tplDir, 'package.json'));
-  const pkg = {
-    ...basePkgInfo,
-    name: `@autots/${options.targetLibName}`,
-  };
+  basePkgInfo.name = `@autots/${options.targetLibName}`;
 
-  fs.writeFileSync(path.join(options.targetDir, 'package.json'), JSON.stringify(pkg, null, 2));
+  fs.writeFileSync(path.join(options.targetDir, 'package.json'), JSON.stringify(basePkgInfo, null, 2));
 }
 
 function installAllDependencies(options) {
@@ -44,9 +46,10 @@ function installAllDependencies(options) {
 
   const tasks = [];
 
+  // TODO： 以下会造成版本不稳定
   if (devDependencies.length > 0) {
     tasks.push(
-      execa('npm', [ 'i', ...devDependencies, '-D'], {
+      execa('npm', [ 'i', ...devDependencies, 'autots-scripts', '-D'], {
         cwd,
       })
     );
@@ -102,7 +105,7 @@ module.exports = {
 
     await tasks.run();
 
-    console.log('%s Project ready', chalk.green.bold('DONE'));
+    console.log('%s the `AutoTs Library` is Ready', chalk.green.bold('DONE'));
     return true;
   }
 };
