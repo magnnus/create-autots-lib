@@ -1,8 +1,8 @@
 {
   "name": "autots-scripts",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.0",
   "description": "a builder for typescript lib using webpack",
-  "bin":  "./bin/index.js",
+  "bin": "./bin/index.js",
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
