@@ -32,14 +32,14 @@ async function copyTplFiles(options) {
 }
 
 function createPkg(options) {
-  const basePkgInfo = require(path.join(options.tplDir, 'package.json'));
+  const basePkgInfo = require(path.join(options.targetDir, 'package.json'));
   basePkgInfo.name = `@autots/${options.targetLibName}`;
 
   fs.writeFileSync(path.join(options.targetDir, 'package.json'), JSON.stringify(basePkgInfo, null, 2));
 }
 
 function installAllDependencies(options) {
-  const pkg = require(path.join(options.tplDir, 'package.json'));
+  const pkg = require(path.join(options.targetDir, 'package.json'));
   const devDependencies = Object.keys(pkg.devDependencies);
   const dependencies = Object.keys(pkg.dependencies);
   const cwd = options.targetDir;
