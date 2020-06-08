@@ -1,10 +1,11 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const cssnano = require('cssnano');
 const webpack = require('webpack');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
 const TerserPlugin = require('terser-webpack-plugin');
+
 const baseConfig = require('./webpack.base');
 
 // confirm `min` entries

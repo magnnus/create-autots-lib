@@ -1,7 +1,7 @@
 {
   "name": "autots-scripts",
   "version": "0.0.2-alpha.0",
-  "description": "a builder for typescript lib using webpack",
+  "description": "A bundle tool for typescript lib using webpack",
   "bin": "./bin/index.js",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "dependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-typescript": "^7.9.0",
@@ -62,6 +63,11 @@
   },
   "peerDependencies": {
     "typescript": "^3.9.3"
+  },
+  "homepage": "https://github.com/magnnus/create-autots-lib",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/magnnus/create-autots-lib"
   },
   "author": "Magn Mah <magnnus1215@gmail.com>",
   "license": "MIT"

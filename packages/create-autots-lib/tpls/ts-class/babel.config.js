@@ -21,6 +21,7 @@ const plugins = [
       useESModules: true,
     },
   ],
+  '@babel/plugin-syntax-dynamic-import'
 ];
 
 module.exports = { presets, plugins };
