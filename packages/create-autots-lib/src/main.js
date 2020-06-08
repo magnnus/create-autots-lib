@@ -98,7 +98,7 @@ module.exports = {
         enabled: () => options.git,
       },
       {
-        title: 'Install dependencies',
+        title: 'Install dependencies (This may take a few minutes, please be patient 😊)',
         task: () => installAllDependencies(options),
       },
     ]);

@@ -7,7 +7,6 @@
   "scripts": {
     "test": "nyc mocha",
     "eslint": "eslint ./lib --fix",
-    "commitmsg": "validate-commit-msg",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "files": [
@@ -18,8 +17,10 @@
   "dependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-typescript": "^7.9.0",
+    "@babel/runtime-corejs3": "^7.10.2",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "autoprefixer": "^9.8.0",

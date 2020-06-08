@@ -2,15 +2,25 @@ const presets = [
   [
     '@babel/preset-env',
     {
+      modules: false,
       useBuiltIns: 'usage',
-      version: 3,
-      proposals: true
-    }
+      corejs: {
+        version: '3.6',
+        proposals: true,
+      },
+    },
   ],
-  '@babel/preset-typescript',
+  // '@babel/preset-typescript',
 ];
 const plugins = [
   '@babel/plugin-proposal-class-properties',
+  [
+    '@babel/plugin-transform-runtime',
+    {
+      corejs: 3,
+      useESModules: true,
+    },
+  ],
 ];
 
 module.exports = { presets, plugins };
