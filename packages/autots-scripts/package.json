@@ -6,7 +6,6 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
-    "eslint": "eslint ./lib --fix",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "files": [
@@ -50,12 +49,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.34",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
     "glob-all": "^3.2.1",
     "mocha": "^7.2.0",
     "nyc": "^15.0.1",
@@ -64,7 +59,7 @@
   "peerDependencies": {
     "typescript": "^3.9.3"
   },
-  "homepage": "https://github.com/magnnus/create-autots-lib",
+  "homepage": "https://github.com/magnnus/create-autots-lib/tree/master/packages/autots-scripts",
   "repository": {
     "type": "git",
     "url": "https://github.com/magnnus/create-autots-lib"

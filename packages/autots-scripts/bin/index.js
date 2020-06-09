@@ -10,7 +10,7 @@ const devConfig = require('../lib/webpack.dev');
 const prodConfig = require('../lib/webpack.prod');
 
 const devServerConfig = Object.assign({}, devConfig.devServer, {
-})
+});
 
 const program = new Command();
 

@@ -22,7 +22,7 @@
     "ncp": "^2.0.0",
     "webpack-node-externals": "^1.7.2"
   },
-  "homepage": "https://github.com/magnnus/create-autots-lib",
+  "homepage": "https://github.com/magnnus/create-autots-lib/tree/master/packages/create-autots-lib",
   "repository": {
     "type": "git",
     "url": "https://github.com/magnnus/create-autots-lib"
