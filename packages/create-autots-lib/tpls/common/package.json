@@ -17,12 +17,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "*"
+  ],
   "keywords": [
     "TypeScript",
     "Lib"
-  ],
-  "files": [
-    "dist"
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
