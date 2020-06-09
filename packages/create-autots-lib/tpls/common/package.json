@@ -17,9 +17,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "*"
-  ],
   "keywords": [
     "TypeScript",
     "Lib"

@@ -9,6 +9,8 @@ const { promisify } = require('util');
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
+const readFile = promisify(fs.readFile);
+const appendFile = promisify(fs.appendFile);
 
 async function initGit(options) {
   const result = await execa('git', ['init'], {
@@ -26,6 +28,10 @@ async function copyTplFiles(options) {
     clobber: false,
     stopOnErr: true,
   });
+
+  const gitignoreData = await readFile(path.join(options.targetDir, 'gitignore'));
+  await appendFile(path.join(options.targetDir, '.gitignore'), gitignoreData);
+
   return copy(options.tplDir, options.targetDir, {
     clobber: true, // will overwrite destination files that already exist
   });

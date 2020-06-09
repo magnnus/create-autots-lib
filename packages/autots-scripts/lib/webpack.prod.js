@@ -1,11 +1,11 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const webpack = require('webpack');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
+const webpack = require('webpack');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const nodeExternals = require('webpack-node-externals');
 const TerserPlugin = require('terser-webpack-plugin');
-
 const baseConfig = require('./webpack.base');
 
 // confirm `min` entries
@@ -47,6 +47,9 @@ const prodConfig = {
       }),
     ],
   },
+  externals: [
+    nodeExternals(),
+  ]
 };
 
 module.exports = merge(baseConfig, prodConfig);

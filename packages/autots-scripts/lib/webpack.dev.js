@@ -26,7 +26,6 @@ const devConfig = {
     new HtmlWebpackPlugin({
       template: path.join(projectRoot, 'public/index.html'),
       inject: 'head',
-      title: 'demo 123',
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
