@@ -12,7 +12,7 @@ const devConfig = {
   devtool: 'source-map',
   devServer: {
     host: '0.0.0.0',
-    port: 8080,
+    port: 8000,
     publicPath: '/',
     contentBase: [
       path.resolve(projectRoot, 'dist'),

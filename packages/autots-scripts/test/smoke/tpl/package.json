@@ -1,18 +1,8 @@
 {
-  "name": "test-demo",
+  "name": "@autots/sticky",
   "version": "0.0.1",
   "description": "test tpl demo",
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "html-inline-css-webpack-plugin": "^1.2.1",
-    "html-webpack-externals-plugin": "^3.8.0",
-    "html-webpack-inline-source-plugin": "0.0.10",
-    "node-notifier": "^5.4.0",
-    "postcss-preset-env": "^6.6.0",
-    "raw-loader": "^0.5.1",
-    "uglifyjs-webpack-plugin": "^2.1.2"
-  }
+  "license": "ISC"
 }
