@@ -1,24 +1,28 @@
 # create-autots-lib
 
-基础 TypeScript Library 生成 CLI 工具。
+A CLI Tool to Generate Basic TypeScript(Vanilla) Library.
 
 ## Usage
 
-### Simplest Way
+### Simplest Way - Recommended 
 
 ```
 $ npx create-autots-lib target-lib-name
 ```
 
+This will create a new dir named as `target-lib-name`.
+
 or 
 
 ```
 # Using Npm:
-#npm init autots-lib
+$ npm init autots-lib target-lib-name
 
 # Using Yarn:
-yarn create autots-lib
+$ yarn create autots-lib target-lib-name
 ```
+
+And you can pass a option  `--yes / -y` to skip questions asking, and if follow this, the CLI will create a `ts-class` lib.
 
 ### Install Globally
 
@@ -33,19 +37,12 @@ $ yarn global create-autots-lib
 and then
 
 ```
-# Global:
 $ create-autots-lib target-lib-name
-
-# Using Npm:
-npm init autots-lib target-lib-name
-
-# Using Yarn:
-yarn create autots-lib target-lib-name
 ```
 
 **Note:** We recommend that the `target-lib-name` should be lowercase and also can use `-` to split the words. When followed that, the bundled UMD module lib can get a global variable `AutoTS.TargetLibName`.
 
-Behind that, we use `const { pascalCase } = require('change-case');` to parse the `name` of `package.json` - ignore the scope(default is `@autots`).
+Behind that, we use `const { pascalCase } = require('change-case');` to parse the `name` of `package.json` - ignore the scope name (default is `@autots`).
 
 ## Template
 
@@ -62,3 +59,7 @@ The target is to generate a library with *some functions*.
 ## TODOs
 
 - ts-utils template
+
+## License
+
+MIT
