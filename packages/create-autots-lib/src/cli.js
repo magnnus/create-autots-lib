@@ -22,14 +22,19 @@ program
   })
   .option('-y, --yes', 'use all default config')
   .option('-g, --git', 'use `git` to init this project')
-  .option('-t, --type <type>', 'select lib type', 'ts-class');
+  .option('-t, --type <type>', 'select lib type');
 
 program.parse()
 
 async function promptForMissingOptions(options) {
+  console.log(23, options, options.yes);
 
   if (options.yes) {
-    return;
+    return {
+      ...options,
+      git: true,
+      type: defaultTpl,
+    };
   }
 
   const questions = [];
@@ -65,7 +70,7 @@ module.exports = {
   async cli() {
     program.parse();
 
-    const options = await promptForMissingOptions(program.opts);
+    const options = await promptForMissingOptions(program.opts());
     options.targetDir = targetDir;
     options.targetLibName = targetLibName;
 

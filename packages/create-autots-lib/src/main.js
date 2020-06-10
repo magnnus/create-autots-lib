@@ -9,8 +9,7 @@ const { promisify } = require('util');
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
-const readFile = promisify(fs.readFile);
-const appendFile = promisify(fs.appendFile);
+const rename = promisify(fs.rename);
 
 async function initGit(options) {
   const result = await execa('git', ['init'], {
@@ -29,10 +28,11 @@ async function copyTplFiles(options) {
     stopOnErr: true,
   });
 
-  const gitignoreData = await readFile(path.join(options.targetDir, 'gitignore'));
-  await appendFile(path.join(options.targetDir, '.gitignore'), gitignoreData);
+  const oldGitIgnore = path.join(options.targetDir, 'gitignore');
+  const newGitIgnore = path.join(options.targetDir, '.gitignore');
+  await rename(oldGitIgnore, newGitIgnore);
 
-  return copy(options.tplDir, options.targetDir, {
+  await copy(options.tplDir, options.targetDir, {
     clobber: true, // will overwrite destination files that already exist
   });
 }
@@ -111,7 +111,14 @@ module.exports = {
 
     await tasks.run();
 
-    console.log('%s the `AutoTs Library` is Ready', chalk.green.bold('DONE'));
+    console.log(`%s The ${options.targetLibName} Lib Directory is Ready`, chalk.green.bold('DONE'));
+    [
+      '',
+      'Then you can follow these commands to start:',
+      `$ ${chalk.greenBright('cd ' + options.targetLibName)}`,
+      `$ ${chalk.greenBright('npm start')}`,
+      '',
+    ].forEach(v => console.log(v));
     return true;
   }
 };
