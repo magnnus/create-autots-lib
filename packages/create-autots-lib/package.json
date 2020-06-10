@@ -1,6 +1,6 @@
 {
   "name": "create-autots-lib",
-  "version": "0.0.4-alpha.4",
+  "version": "0.0.4-alpha.5",
   "description": "A common init tool for typescript libs under the scrope - @autots ",
   "bin": {
     "@autots/create-autots-lib": "bin/index.js",
