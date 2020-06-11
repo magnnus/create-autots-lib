@@ -27,7 +27,6 @@ program
 program.parse()
 
 async function promptForMissingOptions(options) {
-  console.log(23, options, options.yes);
 
   if (options.yes) {
     return {

@@ -7,13 +7,6 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const nodeExternals = require('webpack-node-externals');
 const baseConfig = require('./webpack.base');
 
-// confirm `min` entries
-const entryKeys = Object.keys(baseConfig.entry);
-const prodEntry = {};
-entryKeys.forEach(key => {
-  prodEntry[key + '.min'] = baseConfig.entry[key];
-});
-
 const projectRoot = process.cwd();
 const pkg = require(path.join(projectRoot, 'package.json'));
 const banner =`${pkg.name} v${pkg.version}
@@ -59,7 +52,7 @@ function generateConfig (name) {
 
   if (!cdn) {
     config.externals.push(nodeExternals({
-      importType: 'umd',
+      importType: 'commonjs',
     }));
   }
 
