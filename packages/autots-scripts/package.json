@@ -1,6 +1,6 @@
 {
   "name": "autots-scripts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A bundle tool for typescript lib using webpack",
   "bin": "./bin/index.js",
   "main": "index.js",
