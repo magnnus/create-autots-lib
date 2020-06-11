@@ -29,7 +29,6 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
   module: {
-    unknownContextCritical : false,
     rules: [
       {
         test: /\.js$/,

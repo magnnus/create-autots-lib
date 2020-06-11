@@ -3,9 +3,9 @@ const presets = [
     '@babel/preset-env',
     {
       modules: false,
-      useBuiltIns: 'usage',
+      useBuiltIns: 'entry',
       corejs: {
-        version: '3.6',
+        version: 3,
         proposals: true,
       },
     },
@@ -14,13 +14,7 @@ const presets = [
 ];
 const plugins = [
   '@babel/plugin-proposal-class-properties',
-  [
-    '@babel/plugin-transform-runtime',
-    {
-      corejs: 3,
-      useESModules: true,
-    },
-  ],
+  '@babel/plugin-transform-runtime',
   '@babel/plugin-syntax-dynamic-import'
 ];
 
