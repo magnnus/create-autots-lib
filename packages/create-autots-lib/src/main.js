@@ -55,7 +55,7 @@ function installAllDependencies(options) {
   // TODO： 以下会造成版本不稳定
   if (devDependencies.length > 0) {
     tasks.push(
-      execa('npm', [ 'i', ...devDependencies, 'autots-scripts', '-D'], {
+      execa('npm', [ 'i', ...devDependencies, 'autots-scripts', '-D', '--no-package-lock'], {
         cwd,
       })
     );
@@ -63,7 +63,7 @@ function installAllDependencies(options) {
 
   if (dependencies.length > 0) {
     tasks.push(
-      execa('npm', [ 'i', ...dependencies, '-S'], {
+      execa('npm', [ 'i', ...dependencies, '-S', '--no-package-lock'], {
         cwd,
       })
     );

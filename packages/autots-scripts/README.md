@@ -1,22 +1,25 @@
 # autots-scripts
 
-a CLI tool for build @autots libs.
+a CLI tool for build typescript libs under scope - @autots.
 
 ## Quick start
 
 ```
 $ npm i -g autots-scripts
 $ cd my-project
-$ autots-script start
-
-or
-
-$ autots-script build
 ```
 
-## Features
+### Development
 
+```
+$ autots-script start
+```
 
+### Production
+
+```
+$ autots-script build
+```
 
 ## License
 

@@ -7,7 +7,8 @@
     "start": "autots-scripts start",
     "umd": "autots-scripts build",
     "esm": "tsc --target ES5 --declaration --importHelpers",
-    "build": "npm run umd && npm run esm",
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && npm run umd && npm run esm",
     "lint": "eslint ./src --fix --ext .ts"
   },
   "husky": {
@@ -25,6 +26,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@babel/runtime": "^7.10.2",
+    "rimraf": "^3.0.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
