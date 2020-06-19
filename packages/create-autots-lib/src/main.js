@@ -28,6 +28,7 @@ async function copyTplFiles(options) {
     stopOnErr: true,
   });
 
+  // 特殊处理 gitignore 文件
   const oldGitIgnore = path.join(options.targetDir, 'gitignore');
   const newGitIgnore = path.join(options.targetDir, '.gitignore');
   await rename(oldGitIgnore, newGitIgnore);
@@ -37,40 +38,44 @@ async function copyTplFiles(options) {
   });
 }
 
-function createPkg(options) {
+async function createPkg(options) {
   const basePkgInfo = require(path.join(options.targetDir, 'package.json'));
   basePkgInfo.name = `@autots/${options.targetLibName}`;
+
+  // 更新 autots-scripts 到最新版本
+  const { stdout: scriptsVersion } = await execa('npm', ['view', 'autots-scripts', 'version']);
+  basePkgInfo.devDependencies['autots-scripts'] = scriptsVersion;
 
   fs.writeFileSync(path.join(options.targetDir, 'package.json'), JSON.stringify(basePkgInfo, null, 2));
 }
 
-function installAllDependencies(options) {
-  const pkg = require(path.join(options.targetDir, 'package.json'));
-  const devDependencies = Object.keys(pkg.devDependencies);
-  const dependencies = Object.keys(pkg.dependencies);
-  const cwd = options.targetDir;
+// function installAllDependencies(options) {
+//   const pkg = require(path.join(options.targetDir, 'package.json'));
+//   const devDependencies = Object.keys(pkg.devDependencies);
+//   const dependencies = Object.keys(pkg.dependencies);
+//   const cwd = options.targetDir;
 
-  const tasks = [];
+//   const tasks = [];
 
-  // TODO： 以下会造成版本不稳定
-  if (devDependencies.length > 0) {
-    tasks.push(
-      execa('npm', [ 'i', ...devDependencies, 'autots-scripts', '-D', '--no-package-lock'], {
-        cwd,
-      })
-    );
-  }
+//   // TODO： 以下会造成版本不稳定
+//   if (devDependencies.length > 0) {
+//     tasks.push(
+//       execa('npm', [ 'i', ...devDependencies, 'autots-scripts', '-D', '--no-package-lock'], {
+//         cwd,
+//       })
+//     );
+//   }
 
-  if (dependencies.length > 0) {
-    tasks.push(
-      execa('npm', [ 'i', ...dependencies, '-S', '--no-package-lock'], {
-        cwd,
-      })
-    );
-  }
+//   if (dependencies.length > 0) {
+//     tasks.push(
+//       execa('npm', [ 'i', ...dependencies, '-S', '--no-package-lock'], {
+//         cwd,
+//       })
+//     );
+//   }
 
-  return Promise.all(tasks);
-}
+//   return Promise.all(tasks);
+// }
 
 module.exports = {
   async createLib(options) {
@@ -105,20 +110,34 @@ module.exports = {
       },
       {
         title: 'Install dependencies (This may take a few minutes, please be patient 😊)',
-        task: () => installAllDependencies(options),
+        skip: () => {
+          if (!options.install) {
+            return 'You choose to install manually';
+          }
+        },
+        task: () => execa('npm', [ 'i', '--no-package-lock'], {
+          cwd: options.targetDir,
+        }),
       },
     ]);
 
     await tasks.run();
 
-    console.log(`%s The ${options.targetLibName} Lib Directory is Ready`, chalk.green.bold('DONE'));
-    [
+    console.log(`%s The ${options.targetLibName} Library is Ready`, chalk.green.bold('DONE'));
+    
+    const Tips = [
       '',
       'Then you can follow these commands to start:',
       `$ ${chalk.greenBright('cd ' + options.targetLibName)}`,
-      `$ ${chalk.greenBright('npm start')}`,
-      '',
-    ].forEach(v => console.log(v));
+    ];
+    
+    if (!options.install) {
+      Tips.push(`$ ${chalk.greenBright('npm install')}`);
+    }
+
+    Tips.push(`$ ${chalk.greenBright('npm start')}`, '');
+    
+    Tips.forEach(v => console.log(v));
     return true;
   }
 };

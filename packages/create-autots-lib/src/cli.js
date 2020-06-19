@@ -21,16 +21,18 @@ program
     targetLibName = targetDir.split(path.sep).reverse()[0];
   })
   .option('-y, --yes', 'use all default config')
+  .option('-i, --install', 'immediately install all dependencies')
   .option('-g, --git', 'use `git` to init this project')
   .option('-t, --type <type>', 'select lib type');
 
 program.parse()
 
-async function promptForMissingOptions(options) {
+async function promptForMissingOpts(options) {
 
   if (options.yes) {
     return {
       ...options,
+      install: false,
       git: true,
       type: defaultTpl,
     };
@@ -48,6 +50,15 @@ async function promptForMissingOptions(options) {
     });
   }
 
+  if (!options.install) {
+    questions.push({
+      type: 'confirm',
+      name: 'install',
+      message: 'If install all dependencies immediately?',
+      default: true,
+    });
+  }
+
   if (!options.git) {
     questions.push({
       type: 'confirm',
@@ -58,10 +69,12 @@ async function promptForMissingOptions(options) {
   }
 
   const answers = await inquirer.prompt(questions);
+
   return {
     ...options,
     type: options.type || answers.type,
     git: options.git || answers.git,
+    install: options.install || answers.install,
   };
 }
 
@@ -69,7 +82,7 @@ module.exports = {
   async cli() {
     program.parse();
 
-    const options = await promptForMissingOptions(program.opts());
+    const options = await promptForMissingOpts(program.opts());
     options.targetDir = targetDir;
     options.targetLibName = targetLibName;
 
